@@ -1,0 +1,1 @@
+const char XML_template[] PROGMEM = R"##(<?xml version = '1.0'?><Data><temp id="1">%d</temp><humi id="2">%d</humi><sensio id="3">%d</sensio><co2 id="4">%d</co2></Data>)##";

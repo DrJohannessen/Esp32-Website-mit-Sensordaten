@@ -2,7 +2,6 @@
 Was dieses Script macht:
 -Sensordaten abrufen
 -Sensordaten auf LCD anzeigen
--Website hosten
 */
 
 #include <Arduino.h>

@@ -7,34 +7,25 @@ Was dieses Script macht:
 
 #include <Arduino.h>
 #include <WiFi.h>
-#include <WebServer.h>
 #include <DHT.h>
 #include "index.h"
 #include "functions.h"
 #include "SoftwareSerial.h"
 #include "MHZ19.h"
-#include "XML.h"
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-char LOCAL_SSID[] = "NETGEAR-Guest";
-char LOCAL_PASS[] = "alder,36";
-
 DHT sens(27, DHT11);
 
-char XML[500];
-char buf[200];
 int temp;
 int humi;
 bool sensio; // sensor in ordnung i.o.
 int co2;
 int lcdTimer;
 
-WebServer server(80);
-
 #define RXD2 16
 #define TXD2 17
-#define BAUDRATE 9600 // Native to the sensor (do not change)
+#define BAUDRATE 9600
 
 MHZ19 myMHZ19;
 
@@ -87,23 +78,6 @@ void SensRead()
     }
 }
 
-void SendWebsite()
-{
-    Serial.println("new client, sending web page");
-    server.send(200, "text/html", PAGE_MAIN);
-    Serial.println("Website send");
-}
-
-void SendXML()
-{
-    SensRead();
-    Serial.println("XML requested");
-    sprintf(XML, XML_template, temp, humi, sensio, co2);
-    server.send(200, "text/xml", XML);
-    Serial.println("Sending XML");
-    Serial.println(XML);
-}
-
 void setup()
 {
     Serial.begin(9600);
@@ -115,20 +89,11 @@ void setup()
     Serial2.begin(BAUDRATE, SERIAL_8N1, RXD2, TXD2);
     myMHZ19.begin(Serial2); // *Important, Pass your Stream reference here
 
-    //===========================================================
-
     // connect to wifi
     ConnectWlan(LOCAL_PASS, LOCAL_SSID);
-    //===========================================================
-
-    Serial.println("Starting Server");
-    server.on("/", SendWebsite);
-    server.on("/xml", SendXML);
-
-    server.begin();
 
     printWifiStatus(); // look in functions
-    Serial.println("Server started");
+
     lcd.init();
     lcd.backlight();
     lcd.createChar(0, customChar); // create a new custom character
@@ -148,8 +113,4 @@ void loop()
         lcdWrite();
         Serial.println("LCD");
     }
-
-    //===========================================================
-    server.handleClient();
-    //  Serial.println("Loop");
 }

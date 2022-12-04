@@ -3,6 +3,8 @@ Was dieses Script macht:
 -Sensordaten abrufen
 -Sensordaten auf LCD anzeigen
 - NPT Zeit auslesen
+-Npt Zeit anzeigen auf LCD
+-alle 10 sec updaten
 
 =================
 16:56--C:2000--

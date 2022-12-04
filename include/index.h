@@ -1,3 +1,5 @@
+// index for the website, not used anymore
+
 const char PAGE_MAIN[] PROGMEM = R"##(
 
 <!DOCTYPE html>

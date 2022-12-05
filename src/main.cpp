@@ -88,12 +88,10 @@ void lcdWrite()
     if (40 <= humi && humi <= 60)
     {
         lcd.write(1);
-        Serial.println("3");
     }
     else if (humi < 40 || humi > 60)
     {
         lcd.write(3);
-        Serial.println("1");
     }
 }
 
@@ -108,7 +106,6 @@ void sensRead()
     // error handling
     if (isnan(humi) || isnan(temp))
     {
-        Serial.println("Fehler beim auslesen des Sensors!");
         sensio = false;
         return;
     }
@@ -124,14 +121,12 @@ void readNptTime()
 
     if (!getLocalTime(&timeinfo))
     {
-        Serial.println("Failed to obtain time");
         return;
     }
 }
 
 void setup()
 {
-    Serial.begin(9600);
 
     // initialize sesors and start serial
     sens.begin();
@@ -167,6 +162,5 @@ void loop()
         sensRead();
         lcdWrite();
         readNptTime();
-        Serial.println();
     }
 }

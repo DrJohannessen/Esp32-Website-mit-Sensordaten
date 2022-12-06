@@ -148,6 +148,11 @@ void setup()
     lcd.createChar(1, arrowUp);
     lcd.createChar(2, line);
     lcd.createChar(3, arrowDown);
+    
+    // initialice and configure Backlight PWM
+    ledcSetup(BACKLIGHT_PWM_CHANNEL, BACKLIGHT_PWM_FREQUENCY, BACKLIGHT_PWM_RES);
+    ledcAttachPin(BACKLIGHT_LED_PIN, BACKLIGHT_PWM_CHANNEL);
+    ledcWrite(BACKLIGHT_PWM_CHANNEL, 100);
 
     // configure and initialize NPT time
     configTime(GMT_OFFSET_SECONDS, DAYLIGHT_OFFSET_SECONDS, NTPSERVER);

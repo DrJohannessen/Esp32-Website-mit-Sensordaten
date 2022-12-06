@@ -5,11 +5,7 @@ Was dieses Script macht:
 - NPT Zeit auslesen
 -Npt Zeit anzeigen auf LCD
 -alle 10 sec updaten
-
-=================
-16:56--C:2000--
-T:22*--H:20%---
-=================
+-mit PWM LCD Backlight dimmen
 */
 
 #include <Arduino.h>
@@ -148,7 +144,7 @@ void setup()
     lcd.createChar(1, arrowUp);
     lcd.createChar(2, line);
     lcd.createChar(3, arrowDown);
-    
+
     // initialice and configure Backlight PWM
     ledcSetup(BACKLIGHT_PWM_CHANNEL, BACKLIGHT_PWM_FREQUENCY, BACKLIGHT_PWM_RES);
     ledcAttachPin(BACKLIGHT_LED_PIN, BACKLIGHT_PWM_CHANNEL);

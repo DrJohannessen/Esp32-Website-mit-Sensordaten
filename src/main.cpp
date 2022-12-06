@@ -22,6 +22,10 @@ T:22*--H:20%---
 #include <LiquidCrystal_I2C.h>
 #include <time.h>
 #include "customChar.h"
+#define BACKLIGHT_PWM_CHANNEL 0
+#define BACKLIGHT_PWM_RES 8
+#define BACKLIGHT_PWM_FREQUENCY 5000
+#define BACKLIGHT_LED_PIN 25
 
 DHT sens(27, DHT11);
 

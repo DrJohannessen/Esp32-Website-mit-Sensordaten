@@ -22,6 +22,7 @@ Was dieses Script macht:
 #define BACKLIGHT_PWM_RES 8
 #define BACKLIGHT_PWM_FREQUENCY 5000
 #define BACKLIGHT_LED_PIN 25
+#define TIME_TO_SLEEP_IN_MICROSECONDS 25000000 // 30 seconds
 
 DHT sens(27, DHT11);
 
@@ -29,7 +30,6 @@ int temp;
 int humi;
 bool sensio; // sensor in ordnung i.o.
 int co2;
-int updateTimer;
 struct tm timeinfo;
 char firstLineLcd[16];
 char secondLineLcd[16];
@@ -128,6 +128,8 @@ void readNptTime()
 void setup()
 {
 
+    Serial.begin(9600);
+    Serial.println("Setup");
     // initialize sesors and start serial
     sens.begin();
     Serial2.begin(BAUDRATE, SERIAL_8N1, RXD2, TXD2);
@@ -152,20 +154,21 @@ void setup()
 
     // configure and initialize NPT time
     configTime(GMT_OFFSET_SECONDS, DAYLIGHT_OFFSET_SECONDS, NTPSERVER);
+
+    // configure sleep
+
+    // execute stuff
+    readNptTime();
+    sensRead();
+    lcdWrite();
+
+    // go to sleep
+    Serial2.flush();
+    esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP_IN_MICROSECONDS);
+    Serial.println("Sleep");
+    esp_deep_sleep_start();
 }
 
 void loop()
 {
-    if (WiFi.status() != WL_CONNECTED)
-    {
-        ConnectWlan(LOCAL_PASS, LOCAL_SSID);
-    }
-
-    if (updateTimer < millis())
-    {
-        updateTimer = millis() + 1000;
-        sensRead();
-        lcdWrite();
-        readNptTime();
-    }
 }
